@@ -3,7 +3,7 @@
 
 // Define button, LED, and LCD pins
 const int buttonPin = 2;
-const int ledPin = 13;
+const int ledPin = 12;
 
 // Initialize the I2C LCD
 LiquidCrystal_I2C lcd(0x27, 16, 2);  // Set the LCD I2C address, columns, and rows
