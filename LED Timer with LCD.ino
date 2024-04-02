@@ -14,7 +14,7 @@ int lastButtonState = 0;
 
 // Variables to store timer state
 unsigned long previousMillis = 0;
-const long interval = 60000;  // 1 minute in milliseconds
+const long interval = 3600000;  // 1 hour in milliseconds
 bool timerRunning = false;
 
 void setup() {
@@ -24,7 +24,9 @@ void setup() {
   lcd.begin(16, 2);  // Initialize the LCD with 16 columns and 2 rows
   lcd.backlight();
   lcd.setCursor(0, 0);
-  lcd.print("Time left: 1:00");
+  lcd.print("Time left:");
+  lcd.setCursor(0, 1);
+  lcd.print("1:00:00");
 }
 
 void loop() {
@@ -40,7 +42,9 @@ void loop() {
       digitalWrite(ledPin, LOW);  // Turn off the LED
       lcd.clear();
       lcd.setCursor(0, 0);
-      lcd.print("Time left: 1:00");
+      lcd.print("Time left:");
+      lcd.setCursor(0, 1);
+      lcd.print("1:00:00");
     } else {
       // Stop the timer
       timerRunning = false;
@@ -48,6 +52,8 @@ void loop() {
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("Stopped");
+      lcd.setCursor(0, 1);
+      lcd.print("         ");
     }
   }
 
@@ -60,7 +66,8 @@ void loop() {
     unsigned long currentMillis = millis();
     long elapsedTime = currentMillis - previousMillis;
     long remainingTime = interval - elapsedTime;
-    int minutes = (remainingTime / 1000) / 60;
+    int hours = (remainingTime / 1000) / 3600;
+    int minutes = (remainingTime / 1000 / 60) % 60;
     int seconds = (remainingTime / 1000) % 60;
 
     if (remainingTime <= 0) {
@@ -70,11 +77,15 @@ void loop() {
       lcd.clear();
       lcd.setCursor(0, 0);
       lcd.print("Push up time!");
+      lcd.setCursor(0, 1);
+      lcd.print("         ");
     } else {
       // Update the LCD with the remaining time
-      lcd.clear();
-      lcd.setCursor(0, 0);
-      lcd.print("Time left: ");
+      lcd.setCursor(0, 1);
+      if (hours < 10) lcd.print("0");
+      lcd.print(hours);
+      lcd.print(":");
+      if (minutes < 10) lcd.print("0");
       lcd.print(minutes);
       lcd.print(":");
       if (seconds < 10) lcd.print("0");
